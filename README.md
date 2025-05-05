@@ -1,6 +1,6 @@
 # Description
 
-K6 example project for load testing in a mock API.
+K6 example project for load testing in a mock API, using JavaScript.
 
 ## Dependencies
 

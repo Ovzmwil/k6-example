@@ -1,46 +1,55 @@
-# Description
+# 🧪 K6 Load Test: JSONPlaceholder Comments API
 
-K6 example project for load testing in a mock API, using JavaScript.
+This project contains a K6 performance test script that simulates heavy traffic on the /comments/:id endpoint of the JSONPlaceholder API.
 
-## Dependencies
+## 📜 Script Summary
+- 🔄 Endpoint tested: https://jsonplaceholder.typicode.com/comments/:id
+- 👥 Virtual users (VUs): 500
+- 🕒 Duration: 5 minutes
+- 🎯 Goal: Ensure response time, availability, and response integrity under load
 
-Only K6 is necessary to run this project, you can find the installation guide on the official Grafana page: https://grafana.com/docs/k6/latest/set-up/install-k6/
+## 🚀 How to Run
 
-## Code
+1. **Install K6**
 
-Test configuration: 5 minutes, 500 simultaneous virtual users, and a metric to assert that less than 1% fail.
-Test execution
- - A random number between 0 and 499 is generated to complete the tested URL
- - Sends a GET request
- - Verifies that the status code should be 200, the response time should be less than 1 second, and the response body should not be empty.
+- K6 is necessary to run this project. Use the official installation guide: https://grafana.com/docs/k6/latest/set-up/install-k6/
 
-```javascript
-import http from 'k6/http';
-import { sleep, check } from 'k6';
-
-export const options = {
-    duration: '5m',
-    vus: 500,
-    http_req_failed: ['rate<0.01']
-};
-
-export default function () {
-    const id = Math.floor(Math.random() * 500);
-    const url = `https://jsonplaceholder.typicode.com/comments/${id}`;
-    const res = http.get(url);
-
-    check(res, {
-        'is status 200': (r) => r.status === 200,
-        'response time < 1s': (r) => r.timings.duration < 1000,
-        'response body is not empty': (r) => r.body.length > 0,
-    });
-
-    sleep(1);
-}
+2. **Clone the repository**
+```bash
+git clone https://github.com/Ovzmwil/k6-example.git
+cd k6-example
 ```
 
-## Running with report
-
+3. **Run test**
 ```bash
 K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=html-report.html k6 run script.js --out json=report.json
 ```
+
+## ⚙️ Test Logic
+Randomly selects an ID from 1–500
+
+Sends a GET request to /comments/:id
+
+Performs checks:
+
+- Response status is 200
+
+- Response time is under 1 second
+
+- Response body is not empty
+
+## 📈 Thresholds
+The following condition is set:
+```javascript
+http_req_failed: ['rate<0.01']
+```
+💥 Test fails if more than 1% of requests fail.
+
+## 🧪 Sample Output
+K6 will produce a CLI summary with:
+- Request rate
+- Duration stats
+- Failures
+- Threshold pass/fail
+
+Detailed results will be produced with an HTML dashboard and a JSON report file. 

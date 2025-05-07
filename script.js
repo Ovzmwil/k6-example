@@ -8,7 +8,7 @@ export const options = {
 };
 
 export default function () {
-    const id = Math.floor(Math.random() * 500);
+    const id = Math.floor(Math.random() * 500) + 1;
     const url = `https://jsonplaceholder.typicode.com/comments/${id}`;
     const res = http.get(url);
 
